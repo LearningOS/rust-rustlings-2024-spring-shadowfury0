@@ -16,18 +16,38 @@
 //
 // Execute `rustlings hint quiz3` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
-
 pub struct ReportCard {
     pub grade: f32,
     pub student_name: String,
     pub student_age: u8,
 }
 
+trait AlphabeticGrade {
+    fn to_alphabetic(&self) -> String;
+}
+
+impl AlphabeticGrade for f32 {
+    fn to_alphabetic(&self) -> String {
+        match *self {
+            grade if grade >= 4.5 => String::from("A+"),
+            grade if grade >= 4.0 => String::from("A"),
+            grade if grade >= 3.5 => String::from("A-"),
+            grade if grade >= 3.0 => String::from("B+"),
+            grade if grade >= 2.5 => String::from("B"),
+            grade if grade >= 2.0 => String::from("B-"),
+            grade if grade >= 1.5 => String::from("C+"),
+            grade if grade >= 1.0 => String::from("C"),
+            grade if grade >= 0.5 => String::from("C-"),
+            _ => String::from("F"),
+        }
+    }
+}
+
 impl ReportCard {
     pub fn print(&self) -> String {
+        let alphabetic_grade = self.grade.to_alphabetic();
         format!("{} ({}) - achieved a grade of {}",
-            &self.student_name, &self.student_age, &self.grade)
+            &self.student_name, &self.student_age, alphabetic_grade)
     }
 }
 
@@ -44,7 +64,7 @@ mod tests {
         };
         assert_eq!(
             report_card.print(),
-            "Tom Wriggle (12) - achieved a grade of 2.1"
+            "Tom Wriggle (12) - achieved a grade of B-"
         );
     }
 
@@ -52,7 +72,7 @@ mod tests {
     fn generate_alphabetic_report_card() {
         // TODO: Make sure to change the grade here after you finish the exercise.
         let report_card = ReportCard {
-            grade: 2.1,
+            grade: 4.7,
             student_name: "Gary Plotter".to_string(),
             student_age: 11,
         };
